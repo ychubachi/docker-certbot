@@ -1,0 +1,24 @@
+services:
+  nginx:
+    restart: on-failure
+    image: nginx
+    container_name: nginx
+    ports:
+      - 80:80   # Disable this if you are using TLS
+      - 443:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/html/:/var/www/html/
+      - ./nginx/letsencrypt/:/etc/letsencrypt
+
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   depends_on:
+  #     - nginx
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - ./nginx/html/:/var/www/html/
+  #     - ./nginx/letsencrypt/:/etc/letsencrypt
+  #   command: certonly --webroot -w /var/www/html --agree-tos -m yoshi@chubachi.net -d km.co-creation.info --dry-run
