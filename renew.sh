@@ -1,1 +1,5 @@
-docker run -it --rm --name certbot -v "./nginx/html/:/var/www/html" -v "./nginx/letsencrypt:/etc/letsencrypt" certbot/certbot renew --dry-run
+#!/bin/sh
+docker run \
+    -it --rm --name certbot_script \
+    -v "letsencrypt_data:/etc/letsencrypt" \
+    certbot/certbot renew  --webroot -w /etc/letsencrypt/ --dry-run

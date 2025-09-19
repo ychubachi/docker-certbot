@@ -1,0 +1,23 @@
+# USAGE: docker-compose -f docker-compose-get_cert.yml up
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx-no-ssl.conf:/etc/nginx/nginx.conf
+      - letsencrypt_data:/etc/letsencrypt
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - letsencrypt_data:/etc/letsencrypt
+    command: certonly --agree-tos --webroot -w /etc/letsencrypt/ -m yoshi@chubachi.net -d km.co-creation.info --dry-run
+
+volumes:
+  letsencrypt_data:
+    external: true
+  

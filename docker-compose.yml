@@ -1,0 +1,26 @@
+# USAGE: docker-compose -f docker-compose-get_cert.yml up
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/html:/var/www/html
+      - letsencrypt_data:/etc/letsencrypt
+    entrypoint: "/bin/sh -c 'while :; do sleep 10d & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - letsencrypt_data:/etc/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 10d & wait $${!}; done;'"
+
+volumes:
+  letsencrypt_data:
+    external: true
+  
