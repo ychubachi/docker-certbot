@@ -1,0 +1,15 @@
+* docker-certbot
+** 使い方
+- 証明書を取得する
+
+#+begin_src bash
+  docker compose -f docker-compose-get_cert.yml up
+#+end_src
+
+- certbotが停止したら終了させる（Ctrl-C）
+
+- 更新を組み込んだもの
+
+#+begin_src bash
+  docker compose -f docker-compose.yml up
+#+end_src
