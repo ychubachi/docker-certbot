@@ -1,5 +1,4 @@
 # USAGE: docker-compose -f docker-compose-get_cert.yml up
-version: '3'
 services:
   nginx:
     image: nginx:latest
@@ -16,6 +15,8 @@ services:
   certbot:
     image: certbot/certbot:latest
     container_name: certbot
+    depends_on:
+      - nginx
     volumes:
       - letsencrypt_data:/etc/letsencrypt
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 10d & wait $${!}; done;'"
@@ -23,4 +24,4 @@ services:
 volumes:
   letsencrypt_data:
     external: true
-  
+

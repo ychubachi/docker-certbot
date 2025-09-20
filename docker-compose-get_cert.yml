@@ -1,5 +1,4 @@
 # USAGE: docker-compose -f docker-compose-get_cert.yml up
-version: '3'
 services:
   nginx:
     image: nginx:latest
@@ -13,9 +12,11 @@ services:
   certbot:
     image: certbot/certbot:latest
     container_name: certbot
+    depends_on:
+      - nginx
     volumes:
       - letsencrypt_data:/etc/letsencrypt
-    command: certonly --agree-tos --webroot -w /etc/letsencrypt/ -m yoshi@chubachi.net -d km.co-creation.info --dry-run
+    command: certonly --agree-tos --webroot -w /etc/letsencrypt/ -m yoshi@chubachi.net -d km.co-creation.info
 
 volumes:
   letsencrypt_data:
